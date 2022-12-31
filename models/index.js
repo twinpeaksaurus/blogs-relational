@@ -1,10 +1,10 @@
 const Blog = require('./blog');
 const User = require('./user');
 
-User.hasMany(Note);
-Note.belongsTo(User);
-Blog.sync({alter: true});
-User.sync({alter: true});
+// User.hasMany(Blog);
+// Blog.belongsTo(User);
+Blog.sync();
+User.sync();
 
 module.exports = {
     Blog,

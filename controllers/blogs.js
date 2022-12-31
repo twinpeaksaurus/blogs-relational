@@ -1,7 +1,7 @@
 const router = require('express').Router();
-
 const { Blog } = require('../models');
 
+//middleware to identify blog
 const blogFinder = async (req, res, next) => {
     req.blog = await Blog.findByPk(req.params.id);
     next();
