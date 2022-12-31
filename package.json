@@ -16,5 +16,9 @@
     "pg": "^8.8.0",
     "sequelize": "^6.28.0",
     "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.31.0",
+    "eslint-plugin-react": "^7.31.11"
   }
 }
