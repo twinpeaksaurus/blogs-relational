@@ -15,4 +15,15 @@ router.get('/', async (req, res) => {
     res.json(users);
 });
 
+router.put('/:username', async (req, res) => {
+    const userToUpdate = await User.findOne({ where: { username: req.params.username } });
+    if (userToUpdate) {
+        userToUpdate.username = req.body.newUsername;
+        await userToUpdate.save();
+        res.json(userToUpdate);
+    } else {
+        res.status(404).end();
+    }
+})
+
 module.exports = router;
