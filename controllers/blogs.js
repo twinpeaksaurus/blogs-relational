@@ -30,14 +30,22 @@ const tokenExtractor = (req, res, next) => {
 
 
 router.get('/', async (req, res) => {
-    const where = {}
+    let contentQuery = {}
+    let searchKey = '';
 
-
-    //how can I make this case-insensitive using LIKE?
+    //NEED TO FIGURE OUT HOW TO FIX SO IT STILL RETURNS ALL BLOGS WHEN THERE IS NO SEARCH QUERY
     if (req.query.search) {
-        const searchKey = `%${req.query.search}%`
-        where.title = {
-            [Op.iLike]: searchKey
+        searchKey = `%${req.query.search}%`
+        contentQuery = {
+            [Op.or]: [{
+                title: {
+                    [Op.iLike]: searchKey
+                }
+            }, {
+                author: {
+                    [Op.iLike]: searchKey
+                }
+            }]
         }
     }
 
@@ -48,7 +56,7 @@ router.get('/', async (req, res) => {
             model: User,
             attributes: ['name', 'username']
         },
-        where
+        where: contentQuery
 
     })
     res.json(blogs);
