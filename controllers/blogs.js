@@ -4,7 +4,6 @@ const { SECRET } = require('../util/config');
 const jwt = require('jsonwebtoken')
 
 
-
 //middleware to extract token from request
 const tokenExtractor = (req, res, next) => {
     //what does req.get do below???
@@ -47,10 +46,12 @@ router.post('/', tokenExtractor, async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', tokenExtractor, async (req, res) => {
     try {
+        const user = await User.findByPk(req.decodedToken.id);
+
         const blog = await Blog.findByPk(req.params.id);
-        if (blog) {
+        if (blog && blog.userId == user.id) {
             console.log(blog);
             blog.destroy();
             return res.status(200);
