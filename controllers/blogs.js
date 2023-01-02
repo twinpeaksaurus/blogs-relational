@@ -35,9 +35,9 @@ router.get('/', async (req, res) => {
 
     //how can I make this case-insensitive using LIKE?
     if (req.query.search) {
-        const searchKeyword = (req.query.search)
+        const searchKey = `%${req.query.search}%`
         where.title = {
-            [Op.substring]: searchKeyword
+            [Op.iLike]: searchKey
         }
     }
 
