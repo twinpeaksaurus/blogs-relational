@@ -1,8 +1,8 @@
 const router = require('express').Router();
 const { Blog, User } = require('../models');
 const { SECRET } = require('../util/config');
-const jwt = require('jsonwebtoken')
-
+const jwt = require('jsonwebtoken');
+const { Op } = require('sequelize');
 
 //middleware to extract token from request
 const tokenExtractor = (req, res, next) => {
@@ -30,13 +30,27 @@ const tokenExtractor = (req, res, next) => {
 
 
 router.get('/', async (req, res) => {
+    const where = {}
+
+
+    //how can I make this case-insensitive using LIKE?
+    if (req.query.search) {
+        const searchKeyword = (req.query.search)
+        where.title = {
+            [Op.substring]: searchKeyword
+        }
+    }
+
+
     const blogs = await Blog.findAll({
         attributes: { exclude: ['userId'] },
         include: {
             model: User,
             attributes: ['name', 'username']
-        }
-    });
+        },
+        where
+
+    })
     res.json(blogs);
 });
 
