@@ -1,0 +1,16 @@
+-- UPDATE Blogs
+-- SET likes = 7
+-- WHERE id = 15;
+
+--THIS DOES THE JOIN
+-- SELECT * 
+-- from users INNER JOIN blogs
+-- ON users.id = blogs.user_Id;
+
+
+--This works for getting summary of users' blogs and total likes
+SELECT users.id, users.name, COUNT(*) AS "number_of_blogs", SUM(likes) AS "total_likes"
+FROM (
+	Users INNER JOIN blogs 
+	ON Users.id = blogs.user_Id)
+GROUP BY users.id;
