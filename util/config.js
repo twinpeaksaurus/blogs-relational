@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-require('dotenv').config();
+require('dotenv').config()
 
 module.exports = {
   DATABASE_URL: process.env.DATABASE_URL,
