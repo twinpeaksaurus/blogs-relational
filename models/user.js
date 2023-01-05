@@ -22,6 +22,12 @@ User.init({
                 msg: "Your username must be an email address."
             }
         },
+        created_at: {
+            type: DataTypes.DATE,
+        },
+        updated_at: {
+            type: DataTypes.DATE,
+        }
     }
 }, {
     sequelize,

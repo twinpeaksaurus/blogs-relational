@@ -11,15 +11,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/summary', async (req, res) => {
-    const users = await User.findAll({
-        include: {
-            model: Blog
-        }
-    });
-    res.json(users);
-});
-
 router.get('/', async (req, res) => {
     const users = await User.findAll({
         include: {
@@ -33,6 +24,7 @@ router.put('/:username', async (req, res) => {
     const userToUpdate = await User.findOne({ where: { username: req.params.username } });
     if (userToUpdate) {
         userToUpdate.username = req.body.newUsername;
+        // userToUpdate.updated = new Date();
         await userToUpdate.save();
         res.json(userToUpdate);
     } else {
