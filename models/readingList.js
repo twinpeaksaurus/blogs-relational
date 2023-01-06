@@ -23,5 +23,23 @@ ReadingList.init({
     read: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
+    },
+    created_at: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+    updated_at: {
+        type: DataTypes.DATE,
+    },
+    read_at: {
+        type: DataTypes.DATE,
+        defaultValue: null
     }
-})
+}, {
+    sequelize,
+    timestamps: true,
+    underscored: true,
+    modelName: 'readingList'
+});
+
+module.exports = ReadingList;
