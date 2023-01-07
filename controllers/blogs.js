@@ -1,26 +1,27 @@
 const router = require('express').Router();
 const { Blog, User } = require('../models');
-const { SECRET } = require('../util/config');
-const jwt = require('jsonwebtoken');
+// const { SECRET } = require('../util/config');
+// const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
+const { tokenExtractor } = require('../util/middleware')
 
-//middleware to extract token from request
-const tokenExtractor = (req, res, next) => {
-    //what does req.get do below???
-    const authorization = req.get('authorization');
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        try {
-            req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
-        } catch {
-            return res.status(401).json({ error: 'token invalid' });
-        }
-    } else {
-        console.log(authorization);
+// //middleware to extract token from request
+// const tokenExtractor = (req, res, next) => {
+//     //what does req.get do below???
+//     const authorization = req.get('authorization');
+//     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+//         try {
+//             req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
+//         } catch {
+//             return res.status(401).json({ error: 'token invalid' });
+//         }
+//     } else {
+//         console.log(authorization);
 
-        return res.status(401).json({ error: 'token missing' });
-    }
-    next();
-}
+//         return res.status(401).json({ error: 'token missing' });
+//     }
+//     next();
+// }
 
 //middleware to identify blog
 // const blogFinder = async (req, res, next) => {
@@ -33,7 +34,8 @@ router.get('/', async (req, res) => {
     let contentQuery = {}
     let searchKey = '';
 
-    //NEED TO FIGURE OUT HOW TO FIX SO IT STILL RETURNS ALL BLOGS WHEN THERE IS NO SEARCH QUERY
+    //NEED TO FIGURE OUT HOW TO FIX SO IT STILL RETURNS ALL 
+    //BLOGS WHEN THERE IS NO SEARCH QUERY
     if (req.query.search) {
         searchKey = `%${req.query.search}%`
         contentQuery = {
@@ -69,8 +71,16 @@ router.post('/', tokenExtractor, async (req, res) => {
     try {
         const user = await User.findByPk(req.decodedToken.id)
 
+        //get year
+        const d = new Date();
+        let year = d.getFullYear();
+
+
         //will user.name work here for authorship?
-        const blog = await Blog.create({ ...req.body, userId: user.id, author: user.name });
+        const blog = await Blog.create({
+            ...req.body, userId: user.id,
+            author: user.name, year: year
+        });
         return res.json(blog);
     } catch (e) {
         return res.status(400).json(e);
