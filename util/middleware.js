@@ -1,7 +1,15 @@
 const jwt = require('jsonwebtoken');
 const { SECRET } = require('../util/config');
 
-
+/**
+ * Extracts token from the request's authorization header,
+ * then identifies the appropriate user object and sets it to
+ * req.decodedToken.
+ * @param {object} req 
+ * @param {error} res 
+ * @param {*} next 
+ * @returns 
+ */
 const tokenExtractor = (req, res, next) => {
     //what does req.get do below???
     const authorization = req.get('authorization');

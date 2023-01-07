@@ -9,9 +9,10 @@ User.sync({ alter: true });
 
 User.belongsToMany(Blog, { through: ReadingList });
 Blog.belongsToMany(User, { through: ReadingList });
-
+ReadingList.sync();
 
 module.exports = {
     Blog,
-    User
+    User,
+    ReadingList
 }

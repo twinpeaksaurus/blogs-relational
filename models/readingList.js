@@ -24,20 +24,22 @@ ReadingList.init({
         type: DataTypes.BOOLEAN,
         defaultValue: false
     },
-    read_at: {
-        type: DataTypes.DATE,
-        defaultValue: null
-    },
     created_at: {
         type: DataTypes.DATE,
+        defaultValue: new Date()
     },
     updated_at: {
         type: DataTypes.DATE,
+        defaultValue: new Date()
     },
+    read_at: {
+        type: DataTypes.DATE,
+        defaultValue: null
+    }
 
 }, {
     sequelize,
-    timestamps: true,
+    timestamps: false,
     underscored: true,
     modelName: 'readingList'
 });

@@ -30,6 +30,9 @@ const { tokenExtractor } = require('../util/middleware')
 // }
 
 
+/** 
+ * 
+ */
 router.get('/', async (req, res) => {
     let contentQuery = {}
     let searchKey = '';
@@ -51,7 +54,6 @@ router.get('/', async (req, res) => {
         }
     }
 
-
     const blogs = await Blog.findAll({
         attributes: { exclude: ['userId'] },
         include: {
@@ -67,6 +69,13 @@ router.get('/', async (req, res) => {
     res.json(blogs);
 });
 
+/** 
+ * Route serving addition of blogs.
+ * @name post/blogs
+ * @function 
+ * @param {string} path - express path
+ * @param {callback} middleware - Express middleware
+ */
 router.post('/', tokenExtractor, async (req, res) => {
     try {
         const user = await User.findByPk(req.decodedToken.id)

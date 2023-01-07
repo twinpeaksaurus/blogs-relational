@@ -24,10 +24,12 @@ module.exports = {
             },
             created_at: {
                 type: DataTypes.DATE,
-                allowNull: false
+                defaultValue: new Date()
+
             },
             updated_at: {
                 type: DataTypes.DATE,
+                defaultValue: new Date()
             },
             read_at: {
                 type: DataTypes.DATE,
@@ -35,7 +37,7 @@ module.exports = {
             }
         },
             {
-                timestamps: true,
+                timestamps: false,
                 underscored: true
             })
     },
