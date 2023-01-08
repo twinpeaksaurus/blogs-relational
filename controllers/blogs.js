@@ -31,7 +31,8 @@ const { tokenExtractor } = require('../util/middleware')
 
 
 /** 
- * 
+ * Search query--IMPORTANT for overall organization.
+ * Need pagination?
  */
 router.get('/', async (req, res) => {
     let contentQuery = {}
