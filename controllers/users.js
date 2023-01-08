@@ -20,6 +20,27 @@ router.get('/', async (req, res) => {
     res.json(users);
 });
 
+router.get('/:id', async (req, res) => {
+    const user = await User.findByPk(req.params.id, {
+        include: [
+            {
+                model: Blog,
+                as: 'to_read',
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt',
+                        'userId']
+                },
+                through: {
+                    attributes: ['read', 'read_at', 'id']
+                }
+            }
+        ]
+    });
+    res.json(user);
+
+
+})
+
 router.put('/:username', async (req, res) => {
     const userToUpdate = await User.findOne({ where: { username: req.params.username } });
     if (userToUpdate) {
