@@ -1,4 +1,4 @@
-const { DataTypes, QueryInterface } = require('sequelize');
+const { DataTypes } = require('sequelize');
 
 module.exports = {
     up: async ({ context: QueryInterface }) => {
@@ -18,6 +18,11 @@ module.exports = {
             title: {
                 type: DataTypes.TEXT,
                 allowNull: false
+            },
+            subtitle: {
+                type: DataTypes.TEXT,
+                allowNull: false,
+                default: "grandfathered"
             },
             likes: {
                 type: DataTypes.INTEGER,

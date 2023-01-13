@@ -19,7 +19,24 @@ Blog.init({
         type: DataTypes.TEXT,
         allowNull: false
     },
+    subtitle: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        default: "grandfathered"
+    },
     likes: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    happy: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    angry: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+    },
+    sad: {
         type: DataTypes.INTEGER,
         defaultValue: 0
     },
