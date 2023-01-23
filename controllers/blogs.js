@@ -3,31 +3,9 @@ const { Blog, User } = require('../models');
 // const { SECRET } = require('../util/config');
 // const jwt = require('jsonwebtoken');
 const { Op } = require('sequelize');
-const { tokenExtractor } = require('../util/middleware')
-
-// //middleware to extract token from request
-// const tokenExtractor = (req, res, next) => {
-//     //what does req.get do below???
-//     const authorization = req.get('authorization');
-//     if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-//         try {
-//             req.decodedToken = jwt.verify(authorization.substring(7), SECRET);
-//         } catch {
-//             return res.status(401).json({ error: 'token invalid' });
-//         }
-//     } else {
-//         console.log(authorization);
-
-//         return res.status(401).json({ error: 'token missing' });
-//     }
-//     next();
-// }
-
-//middleware to identify blog
-// const blogFinder = async (req, res, next) => {
-//     req.blog = await Blog.findByPk(req.params.id);
-//     next();
-// }
+const { tokenExtractor } = require('../util/middleware');
+const slugify = require('slugify');
+const crypto = require("crypto");
 
 
 /** 
@@ -85,11 +63,25 @@ router.post('/', tokenExtractor, async (req, res) => {
         const d = new Date();
         let year = d.getFullYear();
 
+        //create slug
+        var titleToSlugify = req.body.title;
+        var slug = slugify(titleToSlugify, { lower: true, strict: true });
+
+        const slugExists = (Blog.findOne({
+            where: {
+                slug: slug
+            }
+        }))
+
+        if (slugExists) {
+            var id = crypto.randomBytes(10).toString('hex');
+            slug = (`${slug}-${id}`);
+        }
 
         //will user.name work here for authorship?
         const blog = await Blog.create({
             ...req.body, userId: user.id,
-            author: user.name, year: year
+            author: user.name, year: year, slug: slug
         });
         return res.json(blog);
     } catch (e) {
@@ -112,13 +104,52 @@ router.delete('/:id', tokenExtractor, async (req, res) => {
     }
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id/like', tokenExtractor, async (req, res) => {
     try {
-        const blog = await Blog.findByPk(req.params.id);
-        if (blog) {
-            blog.likes = req.body.likes;
-            blog.save();
-            return res.json(blog);
+        const user = await User.findByPk(req.decodedToken.id);
+        if (user) {
+            const blog = await Blog.findByPk(req.params.id);
+            if (blog) {
+                blog.likes++;
+                blog.save();
+                return res.json(blog);
+            }
+        }
+    }
+    catch (e) {
+        return res.status(400).json(e);
+    }
+})
+
+router.put('/:id/inspiring', tokenExtractor, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.decodedToken.id);
+
+        if (user) {
+            const blog = await Blog.findByPk(req.params.id);
+            if (blog) {
+                blog.inspiring++;
+                blog.save();
+                return res.json(blog);
+            }
+        }
+    }
+    catch (e) {
+        return res.status(400).json(e);
+    }
+})
+
+router.put('/:id/thoughtful', tokenExtractor, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.decodedToken.id);
+
+        if (user) {
+            const blog = await Blog.findByPk(req.params.id);
+            if (blog) {
+                blog.thoughtful++;
+                blog.save();
+                return res.json(blog);
+            }
         }
     }
     catch (e) {
