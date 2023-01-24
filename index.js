@@ -7,10 +7,12 @@ const { connectToDatabase } = require('./util/db');
 const blogsRouter = require('./controllers/blogs');
 const usersRouter = require('./controllers/users');
 const loginRouter = require('./controllers/login');
+const cors = require('cors');
 const summaryRouter = require('./controllers/authorship');
 const readingListsRouter = require('./controllers/readinglists');
 
 app.use(express.json());
+app.use(cors());
 
 app.use('/api/blogs', blogsRouter);
 app.use('/api/users', usersRouter);

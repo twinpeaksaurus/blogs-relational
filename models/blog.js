@@ -11,10 +11,6 @@ Blog.init({
     author: {
         type: DataTypes.TEXT
     },
-    url: {
-        type: DataTypes.TEXT,
-        allowNull: false
-    },
     title: {
         type: DataTypes.TEXT,
         allowNull: false
@@ -28,15 +24,11 @@ Blog.init({
         type: DataTypes.INTEGER,
         defaultValue: 0
     },
-    happy: {
+    inspiring: {
         type: DataTypes.INTEGER,
         defaultValue: 0
     },
-    angry: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
-    },
-    sad: {
+    thoughtful: {
         type: DataTypes.INTEGER,
         defaultValue: 0
     },
@@ -45,6 +37,12 @@ Blog.init({
     },
     updated_at: {
         type: DataTypes.DATE,
+    },
+    slug: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        unique: true
+
     },
     year: {
         type: DataTypes.INTEGER,
