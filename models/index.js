@@ -19,6 +19,15 @@ User.belongsToMany(Blog, { through: ReadingList, as: 'to_read' });
 Blog.belongsToMany(User, { through: ReadingList });
 ReadingList.sync({ alter: true });
 
+
+User.belongsToMany(User, { as: 'Followed', through: 'Followship' });
+User.sync();
+// User.belongsToMany(User, { through: Follows, as: 'follower' });
+// User.belongsToMany(User, { through: Follows, as: "followed" });
+// Follows.sync({ alter: true });
+
+
+
 //Each comment is connected to one blog and one user.
 //Each blog has multiple comments
 //Each user has multiple comments
